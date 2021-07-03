@@ -1,3 +1,5 @@
+/* Code was written by AHMAD ALIF BIN JAMIL on 2/07/2021 */
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
