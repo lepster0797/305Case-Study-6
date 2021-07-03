@@ -1,24 +1,16 @@
 /* Code was written by AHMAD ALIF BIN JAMIL on 2/07/2021 */
-
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-/*
-Write a complete program to perform the following task:
-a) Define a struct named, Players to store the following data:
-    i. Player’s name
-    ii. Player’s team number
-    iii. The number of score goal
-    iv. The number of yellow cards
-b) Declare an array variable of type Players, named info to store data for 50 Players.
-c) Define a function for each of the following with at least one parameter.
+/* 
+You might be wondering why we're using size_t instead of just int well, it's because logically speaking a "Size" cannot be negative right? 
+So we're using size_t because ize_t is never negative, and it maximizes performance because it's typedef'd to be the unsigned integer type 
+that's big enough -- but not too big -- to represent the size of the largest possible object on the target platform.
 
-    i. readPlayer: read the Players data into array info.
-    ii. findPlayerName: find the Players’ name that were given yellow cards and
-    display their names along with the number of yellow cards.
-    iii. highestScore: find and display the player name
+A good read : https://stackoverflow.com/questions/131803/unsigned-int-vs-size-t
 
-*/
+ */
+
 //Declaring Player struct. 
 typedef struct Players{
    char name[25];
@@ -40,21 +32,14 @@ int comparator(const void *v1 , const void *v2){ //go read  https://www.cplusplu
     const struct Players *elem1 =  v1; 
     const struct Players *elem2 =  v2;
     //elem1 and elem2 are going to be accesssing the .goal member of the Players struct
-    
-    //if elem 1 is greater than elem2, if it is elem1 goes first before elem2
-    if(elem1->goal > elem2 ->goal){
+      
+    if(elem1->goal > elem2 ->goal)  //if elem 1 is greater than elem2, if it is elem1 goes BEFORE elem2
         return -1;
-    }
-    //if elem1 and elem2 are equal do nothing
-    else if(elem1->goal == elem2->goal){
+    else if(elem1->goal == elem2->goal) //if elem1 and elem2 are equal do nothing
         return 0;
-    }
-    //if elem1 is less than elem2 then elem 1 goes AFTER elem2
-    else if(elem1->goal < elem2->goal){
+    else if(elem1->goal < elem2->goal) //if elem1 is less than elem2 then elem 1 goes AFTER elem2
         return 1;
-    }
 }
-
 void highestScore(struct Players info[25], size_t n) //basically im just sorting everything and displaying the one with the highest goals :) 
 {
     //qsort() sorts the array by goals in descending order and puts the highest goal scored at the start of array at index 0
@@ -64,34 +49,28 @@ void highestScore(struct Players info[25], size_t n) //basically im just sorting
     printf("\nPlayer Name: %s\nTeam Number: %d\nGoals: %d\nYellow Cards: %d\n" ,info[0].name,  info[0].team_number, info[0].goal, info[0].yellow_card);
 }
 void readPlayers(FILE *fp , struct Players * info){   //parses the playerdata.txt file and stores it inside of the struct
-
     //some variables
     char name[25];                                     //variable
     int team_number, goal , yellow_card, i = 0;        //more variables
     const unsigned MAX_LENGTH = 256;                   //more variables, max length because i want to scan for a maximum of 256 characters :)
     char buffer[MAX_LENGTH];                           //more variables
-   
+    
    //go google fgets() 
    //looping through the text file, storing each line inside a "buffer"
     while(fgets(buffer, MAX_LENGTH, fp) != NULL){      //takes stuff from text file, stores it in "buffer"
 
         //taking the line inside the buffer and storing it inside these variables, 
         sscanf(buffer, "%s%d%d%d", name, &team_number, &goal, &yellow_card);
-
             //assigning the values from the above variables to the current indexed array.
             strcpy(info[i].name, name);
             info[i].team_number = team_number;
             info[i].goal = goal;
             info[i].yellow_card = yellow_card;
-
             i++;
     }
-
     fclose(fp); // closes the file
-    return; 
-    
+    return;     
 }
-
 //this thing lets u search the known list
 void findPlayerName(struct Players * info, size_t n){   
 
@@ -122,17 +101,14 @@ void findPlayerName(struct Players * info, size_t n){
        }     
     }
         //checking the value of found
-        if(found == 0){
+        if(found == 0)
             printf("\nPlayer Name: %s \nYellow Cards: %d" ,name, yellowcard);
-        }
-        else{
-            printf("\nNope, doesnt exist.");
-        }   
-
+        else
+            printf("\nNope, doesnt exist.");   
 }
 //main function//
 int main(){
-
+    
     char *filename = "../ASS305/playerdata.txt";            //Opening playerdata.txt
     struct Players info[50];                                //declaring a struct instance as an array
     int i = 0, isContinue = 1 , option;                     //some variables
